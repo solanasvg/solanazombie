@@ -1,29 +1,1801 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fullscreen Game Page</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="background-blur"></div>
-  <div class="container">
-    <!-- Header Section for Logo and Menu -->
-    <header class="header">
-        <div class="logo">
-            <img src="logo.png" alt="Logo" class="logo-img">
-            <h1 class="logo-name">Solana Zombie Game</h1>
+<html><head><base href="." /><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>4chan</title><style>
+    body {
+      background: #eef2ff;
+      font-family: arial,helvetica,sans-serif;
+      font-size: 10pt;
+      margin: 0;
+      padding: 8px;
+    }
+    
+    .header {
+      background: #d6daf0;
+      border: 1px solid #b7c5d9;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .board-title {
+      color: #af0a0f;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+    }
+    
+    .board-list {
+      text-align: center;
+      margin: 8px 0;
+    }
+    
+    .board-list a {
+      color: #34345c; 
+      text-decoration: none;
+      margin: 0 4px;
+    }
+    
+    .board-list a:hover {
+      color: #d00;
+    }
+    
+    .thread {
+      background: #d6daf0;
+      border: 1px solid #b7c5d9;
+      margin-bottom: 8px;
+      padding: 4px;
+    }
+    
+    .post {
+      background: #f0e0d6;
+      border: 1px solid #d9bfb7;
+      margin: 4px;
+      padding: 8px;
+      overflow: hidden;
+    }
+    
+    .post:target {
+      background: #f0c0b0;
+    }
+    
+    .post-header {
+      color: #117743;
+      font-weight: bold;
+    }
+    
+    .post-number {
+      color: #800000;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    .post-image {
+      float: left;
+      margin: 4px 16px 4px 4px;
+      max-width: 250px;
+      max-height: 400px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .post-image:hover {
+      transform: scale(1.5);
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+    
+    video.post-image {
+      max-height: 400px;
+      width: auto;
+      object-fit: contain;
+      float: left;
+      margin: 4px 16px 4px 4px;
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+    }
+    
+    video.post-image:hover {
+      transform: scale(1.5);
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+    
+    .post-message {
+      margin-left: 4px;
+    }
+    
+    .post-content {
+      display: flow-root;
+      overflow: hidden;
+    }
+    
+    .post-options {
+      color: #34345c;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+    
+    .post-options span {
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    
+    .greentext {
+      color: #789922;
+    }
+    
+    .quotelink {
+      color: #d00;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    .spoiler {
+      background: #000;
+      color: #000;
+    }
+    
+    .spoiler:hover {
+      color: #fff;
+    }
+    
+    .reply-form {
+      background: #d6daf0;
+      border: 1px solid #b7c5d9;
+      padding: 8px;
+      margin-top: 8px;
+    }
+    
+    .reply-form input[type="file"] {
+      margin: 4px 0;
+    }
+    
+    .reply-form textarea {
+      width: 100%;
+      height: 100px;
+      margin: 4px 0;
+    }
+    
+    .reply-form button {
+      background: #f0e0d6;
+      border: 1px solid #d9bfb7;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    
+    .reply-form button:hover {
+      background: #ffe;
+    }
+    
+    .catalog-mode {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .catalog-thread {
+      width: 200px;
+      height: 300px;
+      overflow: hidden;
+      background: #d6daf0;
+      border: 1px solid #b7c5d9;
+      padding: 4px;
+    }
+    
+    .sage {
+      color: #228854;
+      font-size: 0.9em;
+    }
+    
+    .subject {
+      color: #0f0c5d;
+      font-weight: bold;
+    }
+    
+    .banned {
+      color: red;
+      font-weight: bold;
+    }
+    
+    .sticky {
+      background: #f0e0d6;
+      border: 2px solid #800000;
+    }
+    
+    .archived {
+      opacity: 0.7;
+    }
+    
+    .file-info {
+      font-size: 0.9em;
+      margin: 4px 0;
+      color: #666;
+    }
+    
+    .thread-stats {
+      float: right;
+      font-size: 0.9em;
+      color: #666;
+    }
+    
+    .mod-post {
+      background: #eef2ff;
+      border: 2px solid #117743;
+    }
+    
+    .backlink {
+      font-size: 0.9em;
+      color: #34345c;
+      margin-left: 8px;
+    }
+    
+    .admin-control {
+      color: #800000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    
+    .admin-control:hover {
+      text-decoration: underline;
+    }
+    
+    .admin-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border: 2px solid #800000;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      max-width: 80%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 1001;
+    }
+    
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(2px);
+      z-index: 1000;
+    }
+    
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #800000;
+    }
+    
+    .admin-chat {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 20px;
+      width: 300px;
+      background: #fff;
+      border: 1px solid #d99;
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    
+    .admin-chat-header {
+      background: #ea8 !important;
+      padding: 8px;
+      border-bottom: 1px solid #d99;
+      cursor: pointer;
+      font-weight: bold;
+      color: #800;
+    }
+    
+    .admin-chat-messages {
+      height: 250px;
+      overflow-y: auto;
+      padding: 8px;
+      background: #fff;
+    }
+    
+    .admin-chat-input {
+      display: flex;
+      padding: 8px;
+      border-top: 1px solid #eee;
+    }
+    
+    .admin-chat-input input {
+      flex: 1;
+      padding: 4px;
+      margin-right: 4px;
+    }
+    
+    .admin-chat-message {
+      margin: 4px 0;
+      padding: 4px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .admin-chat-message .username {
+      font-weight: bold;
+      color: #117743;
+    }
+    
+    .admin-chat-message .timestamp {
+      font-size: 0.8em;
+      color: #666;
+    }
+    
+    @keyframes highlight {
+      0% { background-color: #ffd700; }
+      100% { background-color: inherit; }
+    }
+    </style></head><body>
+    <div class="header">
+      <div class="board-title">/b/ - Solchan</div>
+      <div class="update-log" style="background: #fff; border: 1px solid #d9bfb7; padding: 8px; margin: 8px 0; border-radius: 2px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong style="color: #117743;">Update Log</strong>
+          <div>
+            <button onclick="showSuggestionsDialog()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 2px 8px; cursor: pointer; font-size: 0.9em; border-radius: 3px;">
+              💡 Suggest Update
+            </button>
+            <button onclick="showRules()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 2px 8px; cursor: pointer; font-size: 0.9em; border-radius: 3px; margin-left: 4px;">
+              📜 Rules
+            </button>
+            <button id="view-suggestions-btn" onclick="viewSuggestions()" style="display: none; background: #d6daf0; border: 1px solid #b7c5d9; padding: 2px 8px; cursor: pointer; font-size: 0.9em; border-radius: 3px; margin-left: 4px;">
+              View Suggestions
+            </button>
+            <button id="edit-log-btn" onclick="toggleEditLog()" style="display: none; background: #d6daf0; border: 1px solid #b7c5d9; padding: 2px 8px; cursor: pointer; font-size: 0.9em;">Edit</button>
           </div>
-          
-    </header>
-
-    <!-- Game Embed Section -->
-    <div class="game-container">
-        <iframe src="https://www.onlinegames.io/games/2021/unity3/masked-forces-zombie-survival/index.html
-        " title="Game" allowfullscreen></iframe>
+        </div>
+        <div id="update-log-content" style="white-space: pre-wrap; margin-top: 4px; font-size: 0.9em;"></div>
+        <div id="update-log-editor" style="display: none;">
+          <textarea id="log-textarea" style="width: 100%; height: 100px; margin: 4px 0;"></textarea>
+          <button onclick="saveUpdateLog()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 4px 8px; cursor: pointer;">Save Updates</button>
+        </div>
+      </div>
+      <div class="board-list">
+        <div class="active-users" style="text-align: right; margin-top: 4px;">
+          <span id="active-users-count" style="color: #789922;">142 users online</span>
+        </div>
+        <a href="#a" onclick="switchBoard('a')">/a/ - Pump.fun</a>
+        <a href="#b" onclick="switchBoard('b')">/b/ - Random</a>
+        <a href="#v" onclick="switchBoard('v')">/v/ - Video Games</a>
+        <a href="#g" onclick="switchBoard('g')">/g/ - Technology</a>
+        <a href="#pol" onclick="switchBoard('pol')">/pol/ - Politically Incorrect</a>
+        <a href="#x" onclick="switchBoard('x')">/x/ - Paranormal</a>
+        <a href="#gif" onclick="switchBoard('gif')">/gif/ - Memes & GIFs</a>
+        <a href="#misc" onclick="switchBoard('misc')">/misc/ - Misc</a>
+      </div>
+      <div id="ban-status-btn" style="display: none; text-align: right; margin-top: 4px;">
+        <button onclick="viewBanStatus()" style="background: #ffd0d0; border: 1px solid #d99; padding: 4px 8px; cursor: pointer; font-size: 0.9em; border-radius: 3px;">
+          View Ban Status
+        </button>
+        <div style="font-size: 0.9em; color: #800; margin-top: 4px;">
+          Note: If you don't see this button after being banned, please refresh the page.
+        </div>
+      </div>
+      <div id="admin-panel" style="display: none; text-align: right; padding: 4px; background: #fca; border: 1px solid #d99; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <strong style="color: #800;">Admin Panel:</strong>
+        <span onclick="viewReportedPosts()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;" id="report-count"></span>
+        <span onclick="viewBannedUsers()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+          Manage Bans
+        </span>
+        <span onclick="banUserByUsername()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+          Ban User
+        </span>
+        <span onclick="toggleAdminChat()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+          Toggle Admin Chat
+        </span>
+      </div>
+      <div style="text-align: right">
+        <span onclick="toggleView('thread')" style="cursor: pointer; margin-right: 8px;">Thread View</span>
+        <span onclick="toggleView('catalog')" style="cursor: pointer;">Catalog View</span>
+        <span onclick="refreshThread()" style="cursor: pointer; margin-left: 8px;">[Update]</span>
+      </div>
     </div>
-  </div>
-</body>
-</html>
+    
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="admin-popup" class="admin-popup" style="background: linear-gradient(to bottom, #fff, #f8f8f8); border:none; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); padding: 24px">
+    
+      <span class="close-popup" onclick="closeAdminPopup()" style="background: #fff; border: 2px solid #800; border-radius: 50%; width: 24px; height: 24px; line-height: 20px; text-align: center; font-size: 16px; top: 16px; right: 16px; transition: all 0.2s;">×</span>
+      <h2 style="color: #800; font-size: 1.4em; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #eee;">Reported Posts</h2>
+      <div id="reported-posts-container"></div>
+    </div>
+    
+    <div class="reply-form">
+      <input type="text" id="subject" placeholder="Subject" style="margin-right: 8px;">
+      <label><input type="checkbox" id="sage-checkbox"> Sage</label>
+      <input type="file" id="image-upload" accept="image/*,video/*">
+      <div class="file-info" id="file-info"></div>
+      <textarea id="reply-text" placeholder="Reply to thread..."></textarea>
+      <div>
+        <label><input type="checkbox" id="spoiler-checkbox"> Spoiler Image</label>
+      </div>
+      <button onclick="postReply()">Post Reply</button>
+    </div>
+    
+    <div id="thread-container" class="thread">
+      <!-- Thread content will be loaded here -->
+    </div>
+    
+    <div id="admin-chat" class="admin-chat">
+      <div class="admin-chat-header" onclick="toggleAdminChat()">Admin Chat</div>
+      <div class="admin-chat-messages" id="admin-chat-messages"></div>
+      <div class="admin-chat-input">
+        <input type="text" id="admin-chat-input" placeholder="Message..." onkeypress="handleChatKeyPress(event)">
+        <button onclick="sendAdminMessage()">Send</button>
+      </div>
+    </div>
+    
+    <script>
+    let room;
+    let currentBoard = 'b'; // Default to /b/
+    
+    async function getCurrentUser() {
+      try {
+        const user = await window.websim.getUser();
+        return user?.username || 'Anonymous';
+      } catch (err) {
+        console.error('Error getting current user:', err);
+        return 'Anonymous';
+      }
+    }
+    
+    async function toggleEditLog() {
+      const editor = document.getElementById('update-log-editor');
+      const content = document.getElementById('update-log-content');
+    
+      if (editor.style.display === 'none') {
+        const query = `SELECT value FROM settings WHERE key = 'update_log'`;
+        const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        const data = await response.json();
+        document.getElementById('log-textarea').value = data[0]?.value || '';
+        editor.style.display = 'block';
+        content.style.display = 'none';
+      } else {
+        editor.style.display = 'none';
+        content.style.display = 'block';
+      }
+    }
+    
+    async function saveUpdateLog() {
+      const logText = document.getElementById('log-textarea').value;
+      const query = `INSERT OR REPLACE INTO settings (key, value) VALUES ('update_log', '${logText.replace(/'/g, "''")}')`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    
+      document.getElementById('update-log-content').textContent = logText;
+      document.getElementById('update-log-editor').style.display = 'none';
+      document.getElementById('update-log-content').style.display = 'block';
+    }
+    
+    async function loadUpdateLog() {
+      const query = `SELECT value FROM settings WHERE key = 'update_log'`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const data = await response.json();
+      document.getElementById('update-log-content').textContent = data[0]?.value || 'No updates yet.';
+    
+      const currentUser = await getCurrentUser();
+      document.getElementById('edit-log-btn').style.display = 
+        currentUser === 'Cris131k' ? 'block' : 'none';
+    }
+    
+    async function checkAndShowBanStatus() {
+      const currentUser = await getCurrentUser();
+      if (currentUser === 'Anonymous') return;
+    
+      const banQuery = `
+        SELECT * FROM banned_users 
+        WHERE username = '${currentUser}'
+        AND (
+          ban_duration = 0 
+          OR 
+          datetime(banned_at, '+' || ban_duration || ' seconds') > datetime('now')
+        )`;
+      const banResponse = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: banQuery}));
+      const banData = await banResponse.json();
+      
+      const banButton = document.getElementById('ban-status-btn');
+      if (banData.length > 0) {
+        banButton.style.display = 'block';
+        banButton.innerHTML = `
+          <button onclick="viewBanStatus()" style="background: #ffd0d0; border: 1px solid #d99; padding: 4px 8px; cursor: pointer; font-size: 0.9em; border-radius: 3px;">
+            View Ban Status
+          </button>
+          <div style="font-size: 0.9em; color: #800; margin-top: 4px;">
+            Note: If you don't see this button after being banned, please refresh the page.
+          </div>
+        `;
+      } else {
+        banButton.style.display = 'none';
+      }
+    }
+    
+    async function initWebSocket() {
+      room = new WebsimSocket();
+    
+      room.onPeersChanged = async (peers) => {
+        const count = Object.keys(peers).length;
+        let ownerOnline = false;
+    
+        for (const [clientId, peer] of Object.entries(peers)) {
+          if (peer.username === 'Cris131k') {
+            ownerOnline = true;
+            break;
+          }
+        }
+    
+        const ownerText = ownerOnline ? 
+          `<span style="color: #800000;">(Owner online)</span>` : '';
+    
+        document.getElementById('active-users-count').innerHTML = 
+          `${count} users online ${ownerText}`;
+      };
+    
+      room.onmessage = (event) => {
+        const data = event.data;
+        if (data.type === 'admin_chat') {
+          appendChatMessage(data.username, data.message, data.timestamp);
+        }
+      };
+    }
+    
+    async function init() {
+      const settingsQuery = `CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: settingsQuery}));
+    
+      const suggestionsQuery = `CREATE TABLE IF NOT EXISTS suggestions (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        suggestion TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        reviewed BOOLEAN DEFAULT false
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: suggestionsQuery}));
+    
+      const chatLogQuery = `CREATE TABLE IF NOT EXISTS admin_chat (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        message TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: chatLogQuery}));
+    
+      const moderatorsQuery = `CREATE TABLE IF NOT EXISTS moderators (
+        username TEXT PRIMARY KEY,
+        added_by TEXT,
+        added_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: moderatorsQuery}));
+    
+      const bannedUsersQuery = `CREATE TABLE IF NOT EXISTS banned_users (
+        username TEXT PRIMARY KEY,
+        banned_by TEXT,
+        banned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        reason TEXT,
+        ban_duration INTEGER DEFAULT 0,
+        appeal_status TEXT DEFAULT 'none',
+        appeal_text TEXT
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: bannedUsersQuery}));
+    
+      const rulesQuery = `CREATE TABLE IF NOT EXISTS rules (
+        rules_text TEXT
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: rulesQuery}));
+    
+      const boardsQuery = `CREATE TABLE IF NOT EXISTS boards (
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        description TEXT
+      )`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: boardsQuery}));
+    
+      const initBoardsQuery = `
+      INSERT OR IGNORE INTO boards (id, name, description) VALUES
+      ('a', 'Anime & Manga', 'Japanese animation and comics discussion'),
+      ('b', 'Random', 'Random discussions'),
+      ('v', 'Video Games', 'Gaming discussions'),
+      ('g', 'Technology', 'Technology discussions'), 
+      ('pol', 'Politically Incorrect', 'Politics and news discussions'),
+      ('x', 'Paranormal', 'Paranormal and conspiracy discussions'),
+      ('gif', 'Memes & GIFs', 'Memes and reaction images'),
+      ('misc', 'Miscellaneous', 'Other discussions')
+      `;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: initBoardsQuery}));
+    
+      const boards = ['a', 'b', 'v', 'g', 'pol', 'x', 'gif', 'misc'];
+      for (const board of boards) {
+        const msgTableQuery = `CREATE TABLE IF NOT EXISTS messages_${board} (
+          id INTEGER PRIMARY KEY,
+          username TEXT,
+          subject TEXT,
+          message TEXT,
+          image_url TEXT,
+          is_spoiler BOOLEAN,
+          is_op BOOLEAN,
+          is_sage BOOLEAN,
+          is_sticky BOOLEAN,
+          is_archived BOOLEAN,
+          reply_to INTEGER,
+          replies TEXT,
+          reports INTEGER DEFAULT 0,
+          reports_reasons TEXT DEFAULT '[]',
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: msgTableQuery}));
+      }
+    
+      await initRules();
+    
+      initWebSocket();
+    
+      loadUpdateLog();
+      checkAndShowBanStatus();
+    
+      fetchMessages();
+      updateAdminPanel();
+    
+      setInterval(() => {
+        fetchMessages();
+        updateAdminPanel();
+      }, 30000);
+    
+      setInterval(cleanupDuplicates, 60000);
+    
+      document.getElementById('image-upload').addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+          uploadImage(e.target.files[0]);
+        }
+      });
+    
+      document.getElementById('popup-overlay').addEventListener('click', closeAdminPopup);
+    
+      const hash = window.location.hash.substring(1);
+      if(hash && ['a','b','v','g','pol','x', 'gif', 'misc'].includes(hash)) {
+        switchBoard(hash);
+      } else {
+        switchBoard('b');
+      }
+    }
+    
+    async function initRules() {
+      const defaultRules = `Community Rules and Guidelines
+    
+    1. **Respect for Others**  
+       Show respect to all members of the community. Offensive, defamatory, abusive, harassing, or derogatory comments toward other users will not be tolerated.
+    
+    2. **Appropriate Content**  
+       Do not post content containing graphic violence, hate speech, illegal activities, or explicit sexual material. Content promoting dangerous activities, such as drug use, is also prohibited.
+    
+    3. **Privacy**  
+       Do not share other users' personal information without their consent. This includes addresses, phone numbers, identification documents, and other personal data.
+    
+    4. **Authenticity**  
+       Avoid creating fake profiles or impersonating someone else. Users should accurately represent themselves.
+    
+    5. **No Spam or Unauthorized Advertising**  
+       Posting spam or excessive promotion of products or services is not allowed. Unauthorized advertising and mass messaging are prohibited.
+    
+    6. **Copyright Protection**  
+       Share only content that you own or have permission to share. Do not post material that infringes on the copyright of others.
+    
+    7. **Avoid Misleading or False Information**  
+       Do not share content that may mislead other users, including conspiracy theories or false information that could cause harm.
+    
+    8. **Prohibition Against System Manipulation or Alteration**  
+       Sharing content or performing actions that could harm the platform's functionality, compromise its security, or negatively impact other users' experience is strictly prohibited. Any user attempting to manipulate or damage the platform will be permanently banned.
+    
+    9. **Consequences of Rule Violations**  
+       Violating any of these rules may result in warnings, temporary suspensions, or permanent account closure, depending on the severity of the infraction.
+    
+    10. **Reporting Issues**  
+       If you see content or behavior that violates the rules, use the reporting tools to alert the moderation team.
+    
+    ### Safety Tips
+    
+    - Avoid sharing personal information in your posts.
+    - Do not click on suspicious links.`;
+    
+      const query = `INSERT OR REPLACE INTO rules (rules_text) 
+        SELECT '${defaultRules.replace(/'/g, "''")}'
+        WHERE NOT EXISTS (SELECT 1 FROM rules)`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    }
+    
+    async function isAdmin(username) {
+      if (!username || username === 'Anonymous') return false;
+      if (username === 'Cris131k') return true;
+    
+      try {
+        const query = `SELECT * FROM moderators WHERE username = '${username}'`;
+        const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        const data = await response.json();
+        return data && data.length > 0;
+      } catch (err) {
+        console.error('Error checking admin status:', err);
+        return false;
+      }
+    }
+    
+    async function isUserBanned(username) {
+      if (!username) return false;
+      const query = `
+        SELECT * FROM banned_users 
+        WHERE username = '${username}'
+        AND (
+          ban_duration = 0 
+          OR 
+          datetime(banned_at, '+' || ban_duration || ' seconds') > datetime('now')
+        )`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const data = await response.json();
+      return data.length > 0;
+    }
+    
+    async function uploadImage(file) {
+      const fileInfo = document.getElementById('file-info'); 
+      const isVideo = file.type.startsWith('video/');
+      
+      const maxSize = isVideo ? 20971520 : 4194304;
+      
+      if (file.size > maxSize) {
+        alert(`File too large. Maximum file size is ${maxSize/1048576}MB.`);
+        return null;
+      }
+    
+      const checkQuery = `
+        SELECT COUNT(*) as count 
+        FROM messages_${currentBoard} 
+        WHERE image_url LIKE '%${file.name}%'
+        AND timestamp > datetime('now', '-1 minute')`;
+      
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: checkQuery}));
+      const data = await response.json();
+      
+      if (data[0].count >= 5) {
+        alert('Too many duplicate uploads. Please wait before uploading similar content.');
+        return null;
+      }
+    
+      fileInfo.textContent = `${(file.size/1024).toFixed(2)}KB - ${isVideo ? 'Video' : 'Image'}`;
+      
+      try {
+        return await websim.upload(file);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        return null;
+      }
+    }
+    
+    async function postReply() {
+      const currentUser = await getCurrentUser();
+      
+      const banQuery = `
+        SELECT * FROM banned_users 
+        WHERE username = '${currentUser}'
+        AND (
+          ban_duration = 0 
+          OR 
+          datetime(banned_at, '+' || ban_duration || ' seconds') > datetime('now')
+        )`;
+      const banResponse = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: banQuery}));
+      const banData = await banResponse.json();
+      
+      if (banData.length > 0) {
+        const ban = banData[0];
+        const banEnd = ban.ban_duration === 0 ? 'Never' : 
+          new Date(new Date(ban.banned_at).getTime() + (ban.ban_duration * 1000)).toLocaleString();
+        
+        alert(`You are banned and cannot post.\n\nReason: ${ban.reason}\nBanned until: ${banEnd}\n\nYou can view your ban details and appeal by clicking 'View Ban Status' in the header.`);
+        return;
+      }
+    
+      const replyText = document.getElementById('reply-text').value;
+      const subject = document.getElementById('subject').value;
+      const imageFile = document.getElementById('image-upload').files[0];
+      const isSpoiler = document.getElementById('spoiler-checkbox').checked;
+      const isOp = false;
+      const isSage = document.getElementById('sage-checkbox').checked;
+    
+      if (!replyText.trim() && !imageFile) return;
+    
+      const dupeQuery = `
+        SELECT COUNT(*) as count 
+        FROM messages_${currentBoard} 
+        WHERE message = '${replyText.replace(/'/g, "''")}'
+        AND timestamp > datetime('now', '-1 minute')`;
+        
+      const dupeRes = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: dupeQuery}));
+      const dupeData = await dupeRes.json();
+      
+      if (dupeData[0].count >= 5) {
+        alert('Too many duplicate messages. Please wait before posting similar content.');
+        return;
+      }
+    
+      let imageUrl = null;
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile);
+        if (!imageUrl) return;
+      }
+    
+      const query = `INSERT INTO messages_${currentBoard} 
+        (username, subject, message, image_url, is_spoiler, is_op, is_sage, is_sticky, is_archived, replies) 
+        VALUES (
+          '${currentUser}',
+          '${subject.replace(/'/g, "''")}',
+          '${replyText.replace(/'/g, "''")}',
+          '${imageUrl || ''}',
+          ${isSpoiler},
+          ${isOp},
+          ${isSage},
+          false,
+          false,
+          '[]'
+        )`;
+        
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    
+      const newPostQuery = `SELECT id FROM messages_${currentBoard} ORDER BY id DESC LIMIT 1`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: newPostQuery}));
+      const newPost = await response.json();
+      const newPostId = newPost[0].id;
+    
+      const quoteRegex = />>(\d+)/g;
+      let match;
+      while ((match = quoteRegex.exec(replyText)) !== null) {
+        updateBacklinks(newPostId, match[1]);
+      }
+    
+      document.getElementById('subject').value = '';
+      document.getElementById('reply-text').value = '';
+      document.getElementById('image-upload').value = '';
+      document.getElementById('file-info').textContent = '';
+      document.getElementById('spoiler-checkbox').checked = false;
+      document.getElementById('sage-checkbox').checked = false;
+    
+      fetchMessages();
+    }
+    
+    async function cleanupDuplicates() {
+      const cleanupMsgQuery = `
+        DELETE FROM messages_${currentBoard} 
+        WHERE id NOT IN (
+          SELECT MIN(id) 
+          FROM messages_${currentBoard} 
+          GROUP BY message 
+          HAVING COUNT(*) > 1 
+          AND MAX(timestamp) > datetime('now', '-1 minute')
+        )
+        AND id IN (
+          SELECT id
+          FROM messages_${currentBoard}
+          WHERE timestamp > datetime('now', '-1 minute')
+          GROUP BY message
+          HAVING COUNT(*) >= 5
+        )`;
+          
+      const cleanupImgQuery = `
+        DELETE FROM messages_${currentBoard} 
+        WHERE id NOT IN (
+          SELECT MIN(id)
+          FROM messages_${currentBoard}
+          GROUP BY image_url
+          HAVING COUNT(*) > 1
+          AND MAX(timestamp) > datetime('now', '-1 minute')
+        )
+        AND id IN (
+          SELECT id 
+          FROM messages_${currentBoard}
+          WHERE timestamp > datetime('now', '-1 minute')
+          GROUP BY image_url
+          HAVING COUNT(*) >= 5
+        )`;
+          
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: cleanupMsgQuery}));
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: cleanupImgQuery}));
+      fetchMessages();
+    }
+    
+    function updateBacklinks(postId, quotedId) {
+      const query = `SELECT replies FROM messages_${currentBoard} WHERE id = ${quotedId}`;
+      fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}))
+        .then(res => res.json())
+        .then(data => {
+          let replies = data[0]?.replies ? JSON.parse(data[0].replies) : [];
+          if (!replies.includes(postId)) {
+            replies.push(postId);
+            const updateQuery = `UPDATE messages_${currentBoard} SET replies = '${JSON.stringify(replies)}' WHERE id = ${quotedId}`;
+            fetch('/api/v1/sql/?' + new URLSearchParams({sql: updateQuery}));
+          }
+        });
+    }
+    
+    async function banUser(username) {
+      if (!username || username === 'Anonymous') {
+        alert('Cannot ban Anonymous users');
+        return;
+      }
+    
+      const currentUser = await getCurrentUser();
+      if (!await isAdmin(currentUser)) {
+        alert('You do not have permission to ban users');
+        return;
+      }
+    
+      if (await isAdmin(username)) {
+        alert('Cannot ban administrators');
+        return;
+      }
+    
+      const banType = prompt('Enter ban type (permanent/temporary):')?.toLowerCase();
+      if (!banType || !['permanent', 'temporary'].includes(banType)) {
+        alert('Invalid ban type. Please use permanent or temporary.');
+        return;
+      }
+    
+      let duration = 0; // Default for permanent ban
+    
+      if (banType === 'temporary') {
+        const durationType = prompt('Enter ban duration type (minutes/hours/days):')?.toLowerCase();
+        if (!durationType || !['minutes', 'hours', 'days'].includes(durationType)) {
+          alert('Invalid duration type. Please use minutes, hours, or days.');
+          return;
+        }
+    
+        const durationInput = prompt(`Enter number of ${durationType}:`);
+        if (!durationInput) return;
+    
+        duration = parseInt(durationInput);
+        if (isNaN(duration) || duration <= 0) {
+          alert('Please enter a valid positive number');
+          return;
+        }
+    
+        switch(durationType) {
+          case 'minutes': duration *= 60; break;
+          case 'hours': duration *= 60 * 60; break;
+          case 'days': duration *= 24 * 60 * 60; break;
+        }
+      }
+    
+      const reason = prompt('Enter reason for banning user:');
+      if (!reason) return;
+    
+      try {
+        const query = `INSERT INTO banned_users (
+          username, banned_by, reason, ban_duration, appeal_status
+        ) VALUES (
+          '${username}', '${currentUser}', '${reason.replace(/'/g, "''")}', ${duration}, 'none'
+        )`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        alert(`User ${username} has been ${banType === 'permanent' ? 'permanently' : 'temporarily'} banned.`);
+      } catch (err) {
+        console.error('Error banning user:', err);
+        alert('Failed to ban user. Please try again.');
+      }
+    }
+    
+    async function banUserByUsername() {
+      const currentUser = await getCurrentUser();
+      if (!await isAdmin(currentUser)) {
+        alert('You do not have permission to ban users');
+        return;
+      }
+    
+      const username = prompt('Enter username to ban:');
+      if (!username || username === 'Anonymous') {
+        alert('Please enter a valid username');
+        return;
+      }
+    
+      if (await isAdmin(username)) {
+        alert('Cannot ban administrators');
+        return;
+      }
+    
+      const banType = prompt('Enter ban type (permanent/temporary):')?.toLowerCase();
+      if (!banType || !['permanent', 'temporary'].includes(banType)) {
+        alert('Invalid ban type. Please use permanent or temporary.');
+        return;
+      }
+    
+      let duration = 0; // Default for permanent ban
+    
+      if (banType === 'temporary') {
+        const durationType = prompt('Enter ban duration type (minutes/hours/days):')?.toLowerCase();
+        if (!durationType || !['minutes', 'hours', 'days'].includes(durationType)) {
+          alert('Invalid duration type. Please use minutes, hours, or days.');
+          return;
+        }
+    
+        const durationInput = prompt(`Enter number of ${durationType}:`);
+        if (!durationInput) return;
+    
+        duration = parseInt(durationInput);
+        if (isNaN(duration) || duration <= 0) {
+          alert('Please enter a valid positive number');
+          return;
+        }
+    
+        switch(durationType) {
+          case 'minutes': duration *= 60; break;
+          case 'hours': duration *= 60 * 60; break;
+          case 'days': duration *= 24 * 60 * 60; break;
+        }
+      }
+    
+      const reason = prompt('Enter reason for banning user:');
+      if (!reason) return;
+    
+      try {
+        const query = `INSERT INTO banned_users (
+          username, banned_by, reason, ban_duration, appeal_status
+        ) VALUES (
+          '${username}', '${currentUser}', '${reason.replace(/'/g, "''")}', ${duration}, 'none'
+        )`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        alert(`User ${username} has been ${banType === 'permanent' ? 'permanently' : 'temporarily'} banned.`);
+        viewBannedUsers();
+      } catch (err) {
+        console.error('Error banning user:', err);
+        alert('Failed to ban user. The user may already be banned.');
+      }
+    }
+    
+    async function fetchMessages() {
+      const query = `SELECT * FROM messages_${currentBoard} ORDER BY is_sticky DESC, is_op DESC, timestamp DESC`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const messages = await response.json();
+      
+      const threadContainer = document.getElementById('thread-container');
+      const viewMode = localStorage.getItem('viewMode') || 'thread';
+      
+      threadContainer.className = viewMode === 'catalog' ? 'catalog-mode' : 'thread';
+      threadContainer.innerHTML = '';
+      
+      const currentUser = await getCurrentUser();
+      const isAdminUser = await isAdmin(currentUser);
+    
+      messages.forEach(msg => {
+        if (!msg.is_op && viewMode === 'catalog') return;
+        
+        const post = document.createElement('div');
+        post.className = viewMode === 'catalog' ? 'catalog-thread' : 'post';
+        if (msg.is_sticky) post.classList.add('sticky');
+        if (msg.is_archived) post.classList.add('archived');
+        post.id = `post-${msg.id}`;
+        
+        const header = document.createElement('div');
+        header.className = 'post-header';
+        
+        let headerHtml = '';
+        if (msg.subject) headerHtml += `<span class="subject">${msg.subject}</span> `;
+        
+        if (isAdminUser && msg.username && msg.username !== 'Anonymous') {
+          headerHtml += `<span class="post-header-name">${msg.username} <span style="color: #f00; font-size: 0.8em; cursor: pointer;" onclick="banUser('${msg.username}')">[Ban]</span></span> `;
+        } else {
+          headerHtml += `<span class="post-header-name">Anonymous</span> `;
+        }
+    
+        if (msg.is_sage) headerHtml += `<span class="sage">★</span> `;
+        headerHtml += `<span class="post-number" onclick="quotePost(${msg.id})">No.${msg.id}</span> `;
+        headerHtml += new Date(msg.timestamp).toLocaleString();
+        
+        if (msg.replies) {
+          const replies = JSON.parse(msg.replies);
+          if (replies.length > 0) {
+            headerHtml += ' <span class="backlink">Replies:';
+            replies.forEach(replyId => {
+              headerHtml += ` <a href="#post-${replyId}">&gt;&gt;${replyId}</a>`;
+            });
+            headerHtml += '</span>';
+          }
+        }
+        
+        header.innerHTML = headerHtml;
+    
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'post-content';
+        
+        if (msg.image_url) {
+          const fileInfo = document.createElement('div');
+          fileInfo.className = 'file-info';
+          fileInfo.textContent = 'File: ' + msg.image_url.split('/').pop();
+          
+          const isVideo = msg.image_url.match(/\.(mp4|webm|ogg)$/i);
+          
+          if (isVideo) {
+            const video = document.createElement('video');
+            video.className = 'post-image';
+            video.controls = true;
+            video.src = msg.image_url;
+            if (msg.is_spoiler) {
+              video.classList.add('spoiler');
+            }
+            contentDiv.appendChild(fileInfo);
+            contentDiv.appendChild(video);
+          } else {
+            const image = document.createElement('img');
+            image.className = 'post-image';
+            image.src = msg.image_url;
+            image.alt = 'Posted image';
+            if (msg.is_spoiler) {
+              image.classList.add('spoiler');
+            }
+            contentDiv.appendChild(fileInfo);
+            contentDiv.appendChild(image);
+          }
+        }
+        
+        const message = document.createElement('div');
+        message.className = 'post-message';
+        message.innerHTML = formatMessage(msg.message);
+        
+        contentDiv.appendChild(message);
+        post.appendChild(header);
+        post.appendChild(contentDiv);
+        
+        const options = document.createElement('div');
+        options.className = 'post-options';
+        
+        if (isAdminUser) {
+          options.innerHTML = `
+            <span class="admin-control" onclick="deletePost(${msg.id})">Delete Post</span>
+            <span class="admin-control" onclick="toggleSticky(${msg.id})">Toggle Sticky</span>
+            <span class="admin-control" onclick="toggleArchived(${msg.id})">Toggle Archive</span>
+            <span class="admin-control" onclick="reportPost(${msg.id})">View Reports</span>
+          `;
+        } else {
+          options.innerHTML = `
+            <span onclick="reportPost(${msg.id})">Report</span>
+          `;
+        }
+        
+        post.appendChild(options);
+        threadContainer.appendChild(post);
+      });
+      
+      updateAdminPanel();
+    }
+    
+    function formatMessage(text) {
+      if (!text) return '';
+      return text.split('\n').map(line => {
+        line = line.replace(/(https?:\/\/[^\s<]+)/g, url => {
+          const escapedUrl = url.replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(/"/g, '&quot;')
+                                .replace(/'/g, '&#039;');
+          return `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer" style="color: #34345c;">${escapedUrl}</a>`;
+        });
+        
+        if (line.startsWith('>>')) {
+          const postId = line.substring(2);
+          return `<a class="quotelink" onclick="scrollToPost(${postId})">${line}</a>`;
+        }
+        if (line.startsWith('>')) {
+          return `<span class="greentext">${line}</span>`;
+        }
+        return line;
+      }).join('<br>');
+    }
+    
+    async function toggleSticky(id) {
+      const query = `UPDATE messages_${currentBoard} SET is_sticky = NOT is_sticky WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      fetchMessages();
+    }
+    
+    async function toggleArchived(id) {
+      const query = `UPDATE messages_${currentBoard} SET is_archived = NOT is_archived WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      fetchMessages();
+    }
+    
+    function refreshThread() {
+      fetchMessages();
+    }
+    
+    async function reportPost(id) {
+      const reason = prompt('Please enter the reason for reporting this post:');
+      if (!reason) return; 
+    
+      const query = `UPDATE messages_${currentBoard} SET reports = reports + 1 WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    
+      const getReasonsQuery = `SELECT reports_reasons FROM messages WHERE id = ${id}`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: getReasonsQuery}));
+      const data = await response.json();
+    
+      let reasons = JSON.parse(data[0].reports_reasons || '[]');
+      reasons.push(reason);
+    
+      const updateReasonsQuery = `UPDATE messages_${currentBoard} SET reports_reasons = '${JSON.stringify(reasons).replace(/'/g, "''")}' WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: updateReasonsQuery}));
+    
+      alert(`Post #${id} has been reported to moderators.`);
+    }
+    
+    async function updateAdminPanel() {
+      const currentUser = await getCurrentUser();
+      const isOwner = currentUser === 'Cris131k';
+      const adminUser = await isAdmin(currentUser);
+      const adminPanel = document.getElementById('admin-panel');
+      
+      if (adminUser) {
+        adminPanel.style.display = 'block';
+        
+        adminPanel.innerHTML = `
+          <strong style="color: #800;">Admin Panel:</strong>
+          <span onclick="viewReportedPosts()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;" id="report-count"></span>
+          ${isOwner ? `
+            <span onclick="manageModerators()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em; transition: all 0.2s;">
+              Manage Moderators
+            </span>
+          ` : ''}
+          <span onclick="viewBannedUsers()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+            Manage Bans
+          </span>
+          <span onclick="banUserByUsername()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+            Ban User
+          </span>
+          <span onclick="toggleAdminChat()" style="cursor: pointer; margin-left: 8px; background: #fff; padding: 2px 8px; border-radius: 3px; border: 1px solid #d99; font-size: 0.9em;">
+            Toggle Admin Chat
+          </span>
+        `;
+        
+        const query = `SELECT COUNT(*) as count FROM messages_${currentBoard} WHERE reports > 0`;
+        const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        const data = await response.json();
+        const reportCount = data[0].count;
+        document.getElementById('report-count').innerHTML = 
+          `Reported Posts (${reportCount})`;
+    
+        const suggestionBtn = document.getElementById('view-suggestions-btn');
+        suggestionBtn.style.display = 'inline-block';
+    
+        const suggestionCountQuery = `SELECT COUNT(*) as count FROM suggestions WHERE reviewed = false`;
+        const suggestionCountResponse = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: suggestionCountQuery}));
+        const suggestionCountData = await suggestionCountResponse.json();
+        if (suggestionCountData[0].count > 0) {
+          suggestionBtn.textContent = `View Suggestions (${suggestionCountData[0].count})`;
+        } else {
+          suggestionBtn.textContent = 'View Suggestions';
+        }
+      } else {
+        adminPanel.style.display = 'none';
+      }
+    }
+    
+    function closeAdminPopup() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.getElementById('admin-popup').style.display = 'none';
+    }
+    
+    async function viewReportedPosts() {
+      const query = `SELECT * FROM messages_${currentBoard} WHERE reports > 0 ORDER BY reports DESC`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const messages = await response.json();
+      
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = '';
+      
+      if (messages.length === 0) {
+        container.innerHTML = '<p>No reported posts.</p>';
+      } else {
+        messages.forEach(msg => {
+          const reasons = JSON.parse(msg.reports_reasons || '[]');
+          const post = document.createElement('div');
+          post.className = 'post';
+          if (msg.is_sticky) post.classList.add('sticky');
+          
+          post.innerHTML = `
+            <div class="post-header">
+              <span style="color: red; font-weight: bold;">Reports: ${msg.reports}</span>
+              ${msg.subject ? `<span class="subject">${msg.subject}</span>` : ''}
+              <span class="post-header-name">Anonymous</span>
+              <span class="post-number">No.${msg.id}</span>
+              ${new Date(msg.timestamp).toLocaleString()}
+            </div>
+            <div style="background: #fff0f0; padding: 8px; margin: 8px 0; border: 1px solid #fdd; border-radius: 4px;">
+              <strong>Report Reasons:</strong>
+              <ul style="margin: 4px 0; padding-left: 24px;">
+                ${reasons.map(reason => `<li>${reason}</li>`).join('')}
+              </ul>
+            </div>
+            ${msg.image_url ? `
+              <div class="file-info">File: ${msg.image_url.split('/').pop()}</div>
+              ${msg.image_url.match(/\.(mp4|webm|ogg)$/i) ? `
+                <video class="post-image" controls src="${msg.image_url}" alt="Posted video"></video>
+              ` : `
+                <img class="post-image" src="${msg.image_url}" alt="Posted image">
+              `}
+            ` : ''}
+            <div class="post-message">${formatMessage(msg.message)}</div>
+            <div class="post-options">
+              <span class="admin-control" onclick="deletePost(${msg.id})">Delete Post</span>
+              <span class="admin-control" onclick="dismissReports(${msg.id})">Dismiss Reports</span>
+            </div>
+          `;
+          
+          container.appendChild(post);
+        });
+      }
+      
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    async function deletePost(id) {
+      if (confirm('Are you sure you want to delete this post?')) {
+        const query = `DELETE FROM messages_${currentBoard} WHERE id = ${id}`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        fetchMessages();
+        viewReportedPosts();
+        updateAdminPanel();
+      }
+    }
+    
+    async function dismissReports(id) {
+      const query = `UPDATE messages_${currentBoard} SET reports = 0, reports_reasons = '[]' WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      viewReportedPosts();
+      updateAdminPanel();
+    }
+    
+    async function showSuggestionsDialog() {
+      const suggestion = prompt('Enter your suggestion for the site:');
+      if (!suggestion) return;
+      
+      const user = await getCurrentUser();
+      const query = `INSERT INTO suggestions (username, suggestion) VALUES ('${user}', '${suggestion.replace(/'/g, "''")}')`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      
+      alert('Thank you for your suggestion!');
+    }
+    
+    async function viewSuggestions() {
+      const query = `SELECT * FROM suggestions ORDER BY timestamp DESC`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const suggestions = await response.json();
+    
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #117743; margin-bottom: 16px;">User Suggestions</h3>
+      `;
+    
+      if (suggestions.length === 0) {
+        container.innerHTML += '<p>No suggestions yet.</p>';
+      } else {
+        suggestions.forEach(s => {
+          container.innerHTML += `
+            <div style="background: #f0f0f0; padding: 12px; margin-bottom: 12px; border-radius: 4px; ${s.reviewed ? 'opacity: 0.7;' : ''}">
+              <div style="font-size: 0.9em; color: #666; margin-bottom: 4px;">
+                From: ${s.username} - ${new Date(s.timestamp).toLocaleString()}
+              </div>
+              <div style="margin: 8px 0;">${s.suggestion}</div>
+              ${!s.reviewed ? `
+                <button onclick="markSuggestionReviewed(${s.id})" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 2px 8px; cursor: pointer; font-size: 0.9em;">
+                  Mark as Reviewed
+                </button>
+              ` : ''}
+            </div>
+          `;
+        });
+      }
+    
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    async function markSuggestionReviewed(id) {
+      const query = `UPDATE suggestions SET reviewed = true WHERE id = ${id}`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      viewSuggestions();
+    }
+    
+    async function toggleAdminChat() {
+      const currentUser = await getCurrentUser();
+      if (!await isAdmin(currentUser)) return;
+      
+      const chat = document.getElementById('admin-chat');
+      const messages = document.getElementById('admin-chat-messages');
+      
+      if (chat.style.display === 'none' || !chat.style.display) {
+        chat.style.display = 'block';
+        const query = `SELECT * FROM admin_chat ORDER BY timestamp DESC LIMIT 50`;
+        const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        const history = await response.json();
+        
+        messages.innerHTML = '';
+        history.reverse().forEach(msg => {
+          appendChatMessage(msg.username, msg.message, msg.timestamp);
+        });
+        messages.scrollTop = messages.scrollHeight;
+      } else {
+        chat.style.display = 'none';
+      }
+    }
+    
+    function appendChatMessage(username, message, timestamp) {
+      const messages = document.getElementById('admin-chat-messages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'admin-chat-message';
+      msgDiv.innerHTML = `
+        <span class="username">${username}</span>: ${message}
+        <div class="timestamp">${new Date(timestamp).toLocaleString()}</div>
+      `;
+      messages.appendChild(msgDiv);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    
+    async function sendAdminMessage() {
+      const input = document.getElementById('admin-chat-input');
+      const message = input.value.trim();
+      if (!message) return;
+      
+      const currentUser = await getCurrentUser();
+      if (!await isAdmin(currentUser)) return;
+      
+      const timestamp = new Date().toISOString();
+      
+      const query = `INSERT INTO admin_chat (username, message, timestamp) 
+        VALUES ('${currentUser}', '${message.replace(/'/g, "''")}', '${timestamp}')`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      
+      room.send({
+        type: 'admin_chat',
+        username: currentUser,
+        message: message,
+        timestamp: timestamp
+      });
+      
+      input.value = '';
+    }
+    
+    function handleChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendAdminMessage();
+      }
+    }
+    
+    async function manageModerators() {
+      const currentUser = await getCurrentUser();
+      if (currentUser !== 'Cris131k') return;
+    
+      const query = `SELECT * FROM moderators ORDER BY added_at DESC`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const moderators = await response.json();
+    
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #117743; margin-bottom: 16px;">Manage Moderators</h3>
+        <div style="margin-bottom: 16px;">
+          <input type="text" id="new-mod-username" placeholder="Username" style="padding: 4px; margin-right: 8px;">
+          <button onclick="addModerator()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 4px 8px; cursor: pointer;">
+            Add Moderator
+          </button>
+        </div>
+        <div id="moderators-list">
+          ${moderators.map(mod => `
+            <div style="background: #f0f0f0; padding: 12px; margin-bottom: 12px; border-radius: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>${mod.username}</strong>
+                  <div style="font-size: 0.9em; color: #666;">
+                    Added by: ${mod.added_by}
+                    <br>
+                    Added: ${new Date(mod.added_at).toLocaleString()}
+                  </div>
+                </div>
+                <button onclick="removeModerator('${mod.username}')" style="background: #ffd0d0; border: 1px solid #d99; padding: 4px 8px; cursor: pointer;">
+                  Remove
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    async function addModerator() {
+      const currentUser = await getCurrentUser();
+      if (currentUser !== 'Cris131k') return;
+    
+      const username = document.getElementById('new-mod-username').value.trim();
+      if (!username) return;
+    
+      const query = `INSERT INTO moderators (username, added_by) VALUES ('${username}', '${currentUser}')`;
+      try {
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        manageModerators();
+      } catch (err) {
+        alert('Error adding moderator. Username may already be a moderator.');
+      }
+    }
+    
+    async function removeModerator(username) {
+      const currentUser = await getCurrentUser();
+      if (currentUser !== 'Cris131k') return;
+    
+      if (!confirm(`Are you sure you want to remove ${username} as moderator?`)) return;
+    
+      const query = `DELETE FROM moderators WHERE username = '${username}'`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      manageModerators();
+    }
+    
+    async function unbanUser(username) {
+      const query = `DELETE FROM banned_users WHERE username = '${username}'`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      viewBannedUsers();
+    }
+    
+    async function viewBannedUsers() {
+      const query = `SELECT * FROM banned_users ORDER BY banned_at DESC`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const bannedUsers = await response.json() || [];
+    
+      const bans = Array.isArray(bannedUsers) ? bannedUsers : [];
+    
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #117743; margin-bottom: 16px;">Manage Banned Users</h3>
+        <div id="banned-users-list">
+          ${bans.length === 0 ? '<p>No banned users.</p>' : 
+            bans.map(ban => {
+              const banStart = new Date(ban.banned_at);
+              const banEnd = ban.ban_duration === 0 ? 'Permanent' : 
+                new Date(banStart.getTime() + (ban.ban_duration * 1000)).toLocaleString();
+              
+              return `
+                <div style="background: #f0f0f0; padding: 12px; margin-bottom: 12px; border-radius: 4px;">
+                  <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                      <strong>${ban.username}</strong>
+                      <div style="font-size: 0.9em; color: #666;">
+                        Banned by: ${ban.banned_by}
+                        <br>
+                        Banned: ${banStart.toLocaleString()}
+                        <br>
+                        Duration: ${ban.ban_duration === 0 ? 'Permanent' : formatDuration(ban.ban_duration)}
+                        <br>
+                        Ends: ${banEnd}
+                        <br>
+                        Reason: ${ban.reason}
+                      </div>
+                      ${ban.appeal_status !== 'none' ? `
+                        <div style="margin-top: 8px; padding: 8px; background: #fff; border-radius: 4px;">
+                          <strong>Appeal Status: ${ban.appeal_status}</strong>
+                          <div style="margin-top: 4px;">${ban.appeal_text || 'No appeal text provided'}</div>
+                        </div>
+                      ` : ''}
+                    </div>
+                    <button onclick="unbanUser('${ban.username}')" style="background: #ffd0d0; border: 1px solid #d99; padding: 4px 8px; cursor: pointer;">
+                      Unban
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+        </div>
+      `;
+    
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    function formatDuration(seconds) {
+      if (seconds < 60) return `${seconds} seconds`;
+      if (seconds < 3600) return `${Math.floor(seconds/60)} minutes`;
+      if (seconds < 86400) return `${Math.floor(seconds/3600)} hours`;
+      return `${Math.floor(seconds/86400)} days`;
+    }
+    
+    function toggleView(mode) {
+      localStorage.setItem('viewMode', mode);
+      fetchMessages();
+    }
+    
+    function quotePost(id) {
+      const textarea = document.getElementById('reply-text');
+      textarea.value += `>>${id}\n`;
+      textarea.focus();
+    }
+    
+    function scrollToPost(id) {
+      const post = document.getElementById(`post-${id}`);
+      if (post) {
+        post.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        post.style.animation = 'highlight 1s';
+      }
+    }
+    
+    async function viewBanStatus() {
+      const currentUser = await getCurrentUser();
+      const query = `SELECT * FROM banned_users WHERE username = '${currentUser}'`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const banData = await response.json();
+      
+      if (banData.length === 0) return;
+      
+      const ban = banData[0];
+      const banStart = new Date(ban.banned_at);
+      const banEnd = ban.ban_duration === 0 ? 'Permanent' : 
+        new Date(banStart.getTime() + (ban.ban_duration * 1000)).toLocaleString();
+    
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #800; margin-bottom: 16px;">Your Ban Status</h3>
+        <div style="background: #fff0f0; padding: 16px; border-radius: 4px; margin-bottom: 16px;">
+          <div><strong>Banned by:</strong> ${ban.banned_by}</div>
+          <div><strong>Ban Date:</strong> ${banStart.toLocaleString()}</div>
+          <div><strong>Duration:</strong> ${formatDuration(ban.ban_duration)}</div>
+          <div><strong>Ends:</strong> ${banEnd}</div>
+          <div><strong>Reason:</strong> ${ban.reason}</div>
+          
+          ${ban.appeal_status === 'none' ? `
+            <div style="margin-top: 16px;">
+              <button onclick="submitAppeal()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 4px 8px; cursor: pointer;">
+                Submit Appeal
+              </button>
+            </div>
+          ` : `
+            <div style="margin-top: 16px; padding: 12px; background: #fff; border-radius: 4px;">
+              <strong>Appeal Status:</strong> ${ban.appeal_status}
+              ${ban.appeal_text ? `<div style="margin-top: 8px;">${ban.appeal_text}</div>` : ''}
+            </div>
+          `}
+        </div>
+      `;
+    
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    async function submitAppeal() {
+      const currentUser = await getCurrentUser();
+      const appealText = prompt('Please explain why you think your ban should be reconsidered:');
+      if (!appealText) return;
+    
+      const query = `
+        UPDATE banned_users 
+        SET appeal_status = 'pending', appeal_text = '${appealText.replace(/'/g, "''")}'
+        WHERE username = '${currentUser}'
+      `;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      
+      alert('Your appeal has been submitted and will be reviewed by moderators.');
+      viewBanStatus();
+    }
+    
+    async function showRules() {
+      const query = `SELECT rules_text FROM rules LIMIT 1`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const data = await response.json();
+      const rules = data[0]?.rules_text || 'No rules have been set yet.';
+      
+      const currentUser = await getCurrentUser();
+      const isOwner = currentUser === 'Cris131k';
+      
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #117743; margin-bottom: 16px;">Board Rules</h3>
+        <div style="
+          white-space: pre-wrap; 
+          background: #f0f0f0; 
+          padding: 12px; 
+          border-radius: 4px; 
+          margin-bottom: 16px;
+          max-height: 600px;
+          overflow-y: auto;
+          font-size: 14px;
+          line-height: 1.4;
+        ">
+          ${rules}
+        </div>
+        ${isOwner ? `
+          <button onclick="editRules()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 4px 8px; cursor: pointer;">
+            Edit Rules
+          </button>
+        ` : ''}
+      `;
+    
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('admin-popup').style.display = 'block';
+    }
+    
+    async function editRules() {
+      const currentUser = await getCurrentUser();
+      if (currentUser !== 'Cris131k') return;
+    
+      const query = `SELECT rules_text FROM rules LIMIT 1`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const data = await response.json();
+      const currentRules = data[0]?.rules_text || '';
+    
+      const container = document.getElementById('reported-posts-container');
+      container.innerHTML = `
+        <h3 style="color: #117743; margin-bottom: 16px;">Edit Rules</h3>
+        <div style="margin-bottom: 8px;">
+          <span id="rules-char-count" style="color: #666; font-size: 0.9em;">${currentRules.length}/10000 characters</span>
+        </div>
+        <textarea 
+          id="rules-editor" 
+          style="width: 100%; height: 500px; margin-bottom: 16px; padding: 8px; font-size: 14px; line-height: 1.4;"
+          onkeyup="updateRulesCharCount()"
+          maxlength="10000"
+        >${currentRules}</textarea>
+        <button onclick="saveRules()" style="background: #d6daf0; border: 1px solid #b7c5d9; padding: 4px 8px; cursor: pointer;">
+          Save Rules
+        </button>
+      `;
+      updateRulesCharCount();
+    }
+    
+    function updateRulesCharCount() {
+      const textarea = document.getElementById('rules-editor');
+      const counter = document.getElementById('rules-char-count');
+      const count = textarea.value.length;
+      counter.textContent = `${count}/10000 characters`;
+      counter.style.color = count > 9000 ? '#c00' : '#666';
+    }
+    
+    async function saveRules() {
+      const currentUser = await getCurrentUser();
+      if (currentUser !== 'Cris131k') return;
+    
+      const rulesText = document.getElementById('rules-editor').value;
+      const query = `INSERT OR REPLACE INTO rules (rules_text) VALUES ('${rulesText.replace(/'/g, "''")}')`;
+      await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    
+      alert('Rules have been updated!');
+      showRules();
+    }
+    
+    init();
+    async function switchBoard(boardId) {
+      currentBoard = boardId;
+      
+      const query = `SELECT name FROM boards WHERE id = '${boardId}'`;
+      const response = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+      const data = await response.json();
+      
+      document.querySelector('.board-title').textContent = 
+        `/${boardId}/ - ${data[0]?.name}`;
+      
+      document.querySelectorAll('.board-list a').forEach(a => {
+        if(a.getAttribute('href') === `#${boardId}`) {
+          a.style.fontWeight = 'bold';
+          a.style.color = '#800000';
+        } else {
+          a.style.fontWeight = 'normal';
+          a.style.color = '#34345c';
+        }
+      });
+    
+      fetchMessages();
+    }
+    </script>
+    </body></html>
